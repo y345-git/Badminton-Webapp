@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://10.210.8.93:5328/api';
+const API_BASE_URL = 'https://badminton-webapp.onrender.com/api';
 
 // Auth API
 export const authAPI = {

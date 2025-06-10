@@ -3,9 +3,9 @@ import './globals.css'
 import { Toaster } from "sonner"
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'Badminton Scoring App',
+  description: 'Created by Yash Patil',
+  generator: 'Yash Patil',
 }
 
 export default function RootLayout({

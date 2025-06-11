@@ -52,7 +52,7 @@ export default function HomePage() {
     // Fetch live matches from /api/matches route
     const fetchLiveMatches = async () => {
       try {
-        const response = await fetch('http://192.168.29.152:5328/api/matches?status=live', {
+        const response = await fetch('https://badminton-webapp.onrender.com/api/matches?status=live', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ export default function HomePage() {
     // Fetch match statistics from /api/stats/dashboard route
     const fetchStats = async () => {
       try {
-        const response = await fetch('http://192.168.29.152:5328/api/stats/dashboard', {
+        const response = await fetch('https://badminton-webapp.onrender.com/api/stats/dashboard', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'

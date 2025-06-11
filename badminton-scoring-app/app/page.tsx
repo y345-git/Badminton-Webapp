@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Clock, MapPin, Users, Trophy } from "lucide-react"
+import { Clock, MapPin, Users, Trophy, Feather } from "lucide-react"
 import Link from "next/link"
 import { formatDateTime, formatCourt, formatEventType, formatElapsedTime } from "@/app/utils/formatting"
 
@@ -52,7 +52,7 @@ export default function HomePage() {
     // Fetch live matches from /api/matches route
     const fetchLiveMatches = async () => {
       try {
-        const response = await fetch('https://badminton-webapp.onrender.com/api/matches?status=live', {
+        const response = await fetch('http://192.168.29.152:5328/api/matches?status=live', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ export default function HomePage() {
     // Fetch match statistics from /api/stats/dashboard route
     const fetchStats = async () => {
       try {
-        const response = await fetch('https://badminton-webapp.onrender.com/api/stats/dashboard', {
+        const response = await fetch('http://192.168.29.152:5328/api/stats/dashboard', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -129,6 +129,19 @@ export default function HomePage() {
       default:
         return "bg-gray-500"
     }
+  }
+
+  const getServingPlayer = (match: LiveMatch) => {
+    if (match.status === 'live') {
+      const currentSetScores = match.scores.find(set => set.set_number === match.current_set);
+      if (currentSetScores) {
+        if (currentSetScores.player1_score > currentSetScores.player2_score) return 1;
+        if (currentSetScores.player2_score > currentSetScores.player1_score) return 2;
+        // If tied, or no points, for simplicity, default to player 1 for display
+        if (currentSetScores.player1_score > 0 || currentSetScores.player2_score > 0) return 1;
+      }
+    }
+    return null;
   }
 
   return (
@@ -192,13 +205,23 @@ export default function HomePage() {
                   {/* Players */}
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="font-medium">{match.player1 || 'Player 1'}</span>
+                      <span className="font-medium flex items-center">
+                        {match.player1 || 'Player 1'}
+                        {getServingPlayer(match) === 1 && match.status === 'live' && (
+                          <Feather className="ml-2 h-4 w-4 text-yellow-500 fill-yellow-500" />
+                        )}
+                      </span>
                       <span className="text-lg font-bold">
                         {match.scores && match.scores[match.current_set - 1] ? match.scores[match.current_set - 1].player1_score : 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="font-medium">{match.player2 || 'Player 2'}</span>
+                      <span className="font-medium flex items-center">
+                        {match.player2 || 'Player 2'}
+                        {getServingPlayer(match) === 2 && match.status === 'live' && (
+                          <Feather className="ml-2 h-4 w-4 text-yellow-500 fill-yellow-500" />
+                        )}
+                      </span>
                       <span className="text-lg font-bold">
                         {match.scores && match.scores[match.current_set - 1] ? match.scores[match.current_set - 1].player2_score : 0}
                       </span>

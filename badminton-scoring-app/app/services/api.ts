@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://badminton-webapp.onrender.com/api';
+const API_BASE_URL = 'http://192.168.29.152:5328/api';
 
 // Auth API
 export const authAPI = {
@@ -113,6 +113,14 @@ export const matchAPI = {
 
   nextSet: async (matchId: number) => {
     const response = await fetch(`${API_BASE_URL}/matches/${matchId}/next-set`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    return response.json();
+  },
+
+  endMatchAbruptly: async (matchId: number) => {
+    const response = await fetch(`${API_BASE_URL}/matches/${matchId}/end-abruptly`, {
       method: 'POST',
       credentials: 'include',
     });
